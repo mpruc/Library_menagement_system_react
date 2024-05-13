@@ -1,4 +1,4 @@
-.books-list {
+.single-book {
     padding: 0;
     display: flex;
     flex-direction: column;
@@ -7,7 +7,7 @@
     align-items: center;
     font-size: 25px;
 }
-.book-list li {
+.single-book li {
     margin-bottom: 20px;
 }
 
@@ -47,21 +47,19 @@
 .nav-links a:hover {
     color: lightgray;
 }
-.search-bar {
-    margin-bottom: 20px;
-    padding: 10px;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 30%;
-    font-size: 25px;
+.book-table {
+    border-collapse: collapse;
+    width: 50%;
 }
-.book-button {
-    background-color: transparent;
-    border: none;
-    padding: 0;
-    font: inherit;
-    cursor: pointer;
+
+.book-table td, .book-table th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+.book-table tr:nth-child(even) {
+    background-color: #f2f2f2;
 }
 
 
