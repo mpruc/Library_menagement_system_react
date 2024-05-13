@@ -42,7 +42,7 @@ function Reviews() {
     {
       id: 1,
       book: "Władca Pierścieni",
-      user: "Jan Kowalski",
+      user: "jkowal",
       rating: 5,
       comment: "Super książka!",
       date: "2024-05-12",
@@ -50,7 +50,7 @@ function Reviews() {
     {
       id: 2,
       book: "Harry Potter i Kamień Filozoficzny",
-      user: "Anna Nowak",
+      user: "ann",
       rating: 4,
       comment: "Bardzo przyjemna lektura",
       date: "2024-05-11",
