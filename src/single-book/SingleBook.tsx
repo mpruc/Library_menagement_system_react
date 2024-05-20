@@ -1,47 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import "./SingleBook.css";
-import LoginForm from "../login-form/LoginForm";
-import BooksList from "../books-list/BooksList";
-import BookDetails from "../book-details/BookDetails";
-import Reviews from "../reviews/Reviews";
+import { Link } from "react-router-dom";
 
 function SingleBook() {
-  const [redirect, setRedirect] = useState<boolean>(false);
-  const [redirectBooks, setRedirectBooks] = useState<boolean>(false);
-  const [redirectBooksD, setRedirectBooksD] = useState<boolean>(false);
-  const [redirectRev, setRedirectRev] = useState<boolean>(false);
-
-  function handleLoginClick() {
-    setRedirect(true);
-  }
-
-  if (redirect) {
-    return <LoginForm />;
-  }
-
-  function handleBookDClick() {
-    setRedirectBooksD(true);
-  }
-
-  function handleReviewsClick() {
-    setRedirectRev(true);
-  }
-  if (redirectRev) {
-    return <Reviews />;
-  }
-
-  function handleBooksListClick() {
-    setRedirectBooks(true);
-  }
-
-  if (redirectBooks) {
-    return <BooksList />;
-  }
-  if (redirectBooksD) {
-    return <BookDetails />;
-  }
-
   const bookData = {
+    id: 1,
     tytuł: "Władca Pierścieni",
     autor: "J.R.R. Tolkien",
     wydawca: "Wydawnictwo XYZ",
@@ -54,20 +17,11 @@ function SingleBook() {
     <div className="single-book">
       <nav className="navbar">
         <div className="nav-links">
-          <a href="#" onClick={handleBookDClick}>
-            Szczegóły książki
-          </a>
-          <a href="#" onClick={handleReviewsClick}>
-            Recenzje książki
-          </a>
-          <a href="#" onClick={handleBooksListClick}>
-            Lista książek
-          </a>
-          {!redirect && (
-            <a href="#" onClick={handleLoginClick}>
-              Zaloguj się
-            </a>
-          )}
+          <Link to={`/book-details/${bookData.id}`}>Szczegóły książki</Link>
+          <Link to={`/reviews/${bookData.id}`}>Recenzje książki</Link>
+          <Link to="/books">Lista książek</Link>
+          <Link to="/main">Strona główna</Link>
+          <Link to="/">Wyloguj</Link>
         </div>
       </nav>
       <header className="header">Informacje o książce</header>
