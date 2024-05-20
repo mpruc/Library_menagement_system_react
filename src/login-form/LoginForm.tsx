@@ -1,10 +1,9 @@
-// LoginForm.tsx
-import React, { useState } from "react";
+import React, { useCallback } from "react";
 import { Button, TextField } from "@mui/material";
 import { Formik, FormikHelpers } from "formik";
 import * as yup from "yup";
+import { Link, useNavigate } from "react-router-dom";
 import "./LoginForm.css";
-import BooksList from "../books-list/BooksList";
 
 interface FormValues {
   username: string;
@@ -12,16 +11,16 @@ interface FormValues {
 }
 
 function LoginForm() {
-  const onSubmit = (values: FormValues, formik: FormikHelpers<FormValues>) => {
-    console.log(values);
-  };
-  const [redirect, setRedirect] = useState<boolean>(false);
-  function handleClick() {
-    setRedirect(true);
-  }
-  if (redirect) {
-    return <BooksList />;
-  }
+  const navigate = useNavigate();
+  const onSubmit = useCallback(
+    (values: FormValues, formik: FormikHelpers<FormValues>) => {
+      console.log(values);
+      navigate("/main");
+      console.log("/main");
+    },
+    [navigate],
+  );
+
   const validationSchema = yup.object().shape({
     username: yup.string().required("Pole nie może być puste"),
     password: yup
@@ -34,10 +33,10 @@ function LoginForm() {
     <div>
       <nav className="navbar">
         <div className="nav-links">
-          <a href="#" onClick={handleClick}>
-            Lista książek
-          </a>
-          <a href="#">Kontakt</a>
+          {/*<Link to="/books">Lista książek</Link>*/}
+          {/*<Link to="/reviews">Recenzje książek</Link>*/}
+          <Link to="#">Kontakt</Link>
+          <Link to="">O nas</Link>
         </div>
       </nav>
       <header className="header">Zaloguj się</header>
@@ -83,6 +82,9 @@ function LoginForm() {
               variant="contained"
               type="submit"
               disabled={!(formik.isValid && formik.dirty)}
+              style={{
+                backgroundColor: formik.isValid && formik.dirty ? "purple" : "",
+              }}
             >
               Zaloguj się
             </Button>

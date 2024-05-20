@@ -4,42 +4,11 @@ import LoginForm from "../login-form/LoginForm";
 import BooksList from "../books-list/BooksList";
 import Reviews from "../reviews/Reviews";
 import SingleBook from "../single-book/SingleBook";
+import { Link } from "react-router-dom";
 
 function BookDetails() {
-  const [redirect, setRedirect] = useState<boolean>(false);
-  const [redirectBooks, setRedirectBooks] = useState<boolean>(false);
-  const [redirectRev, setRedirectRev] = useState<boolean>(false);
-  const [redirectBook, setRedirectBook] = useState<boolean>(false);
-
-  function handleLoginClick() {
-    setRedirect(true);
-  }
-
-  if (redirect) {
-    return <LoginForm />;
-  }
-  function handleBooksListClick() {
-    setRedirectBooks(true);
-  }
-
-  if (redirectBooks) {
-    return <BooksList />;
-  }
-  function handleReviewsClick() {
-    setRedirectRev(true);
-  }
-  if (redirectRev) {
-    return <Reviews />;
-  }
-  function handleBookClick() {
-    setRedirectBook(true);
-  }
-
-  if (redirectBook) {
-    return <SingleBook />;
-  }
-
   const bookData = {
+    id: 1,
     tytuł: "Władca pierścieni",
     autor: "J.R.R. Tolkien",
     gatunek: "fantasy",
@@ -52,18 +21,11 @@ function BookDetails() {
     <div className="book-details">
       <nav className="navbar">
         <div className="nav-links">
-          <a href="#" onClick={handleBookClick}>
-            Informacje o książce
-          </a>
-          <a href="#" onClick={handleReviewsClick}>
-            Recenzje książki
-          </a>
-          <a href="#" onClick={handleBooksListClick}>
-            Lista książek
-          </a>
-          <a href="#" onClick={handleLoginClick}>
-            Zaloguj się
-          </a>
+          <Link to="/book/${bookData.id}">Informacje o książce</Link>
+          {/*<Link to="/reviews/${bookData.id}">Recenzje książki</Link>*/}
+          <Link to="/books">Lista książek</Link>
+          <Link to="/main">Strona główna</Link>
+          <Link to="/">Wyloguj</Link>
         </div>
       </nav>
       <header className="header">Szczegóły książki</header>
