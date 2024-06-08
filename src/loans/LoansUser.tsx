@@ -5,29 +5,35 @@ import { Link, useParams } from "react-router-dom";
 import { useApi } from "../api/dto/ApiProvider";
 import { GetLoanResponseDto } from "../api/dto/loan.dto";
 
-function Loans() {
+function LoansUser() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [loansPerPage] = useState<number>(10);
-
   const [loanData, setLoanData] = useState<GetLoanResponseDto[]>([]);
   const apiClient = useApi();
 
   useEffect(() => {
-    apiClient.getLoans().then((response) => {
-      if (response.success) {
-        const formattedLoanData = response.data.map(
-          (loan: GetLoanResponseDto) => ({
-            ...loan,
-            loanDate: new Date(loan.loanDate).toISOString().split("T")[0],
-            dueDate: new Date(loan.dueDate).toISOString().split("T")[0],
-            returnDate: loan.returnDate
-              ? new Date(loan.returnDate).toISOString().split("T")[0]
-              : null,
-          }),
-        );
-        setLoanData(formattedLoanData);
+    apiClient.getMe().then((meResponse) => {
+      if (meResponse.success) {
+        const userId = meResponse.data.id;
+        apiClient.getLoans(userId).then((response) => {
+          if (response.success) {
+            const formattedLoanData = response.data.map(
+              (loan: GetLoanResponseDto) => ({
+                ...loan,
+                loanDate: new Date(loan.loanDate).toISOString().split("T")[0],
+                dueDate: new Date(loan.dueDate).toISOString().split("T")[0],
+                returnDate: loan.returnDate
+                  ? new Date(loan.returnDate).toISOString().split("T")[0]
+                  : null,
+              }),
+            );
+            setLoanData(formattedLoanData);
+          } else {
+            console.error("Failed to fetch loans:", response.statusCode);
+          }
+        });
       } else {
-        console.error("Failed to fetch loans:", response.statusCode);
+        console.error("Failed to fetch user:", meResponse.statusCode);
       }
     });
   }, [apiClient]);
@@ -95,21 +101,8 @@ function Loans() {
           &gt;
         </button>
       </div>
-      <div className="add-loan-button">
-        <Link to="/add_loan">
-          <Button variant="contained" style={{ backgroundColor: "purple" }}>
-            Dodaj wypożyczenie
-          </Button>
-        </Link>
-        &nbsp;&nbsp;&nbsp;
-        <Link to="/delete_loan">
-          <Button variant="contained" style={{ backgroundColor: "purple" }}>
-            Usuń wypożyczenie
-          </Button>
-        </Link>
-      </div>
     </div>
   );
 }
 
-export default Loans;
+export default LoansUser;

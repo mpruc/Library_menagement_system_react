@@ -1,4 +1,4 @@
-.book-details {
+.users {
     padding: 0;
     display: flex;
     flex-direction: column;
@@ -7,10 +7,6 @@
     align-items: center;
     font-size: 25px;
 }
-.single-book li {
-    margin-bottom: 20px;
-}
-
 .header {
     color: black;
     transform: translateY(50px);
@@ -47,41 +43,46 @@
 .nav-links a:hover {
     color: lightgray;
 }
-.bookdet-table {
+.users-table {
     border-collapse: collapse;
     width: 50%;
 }
 
-.bookdet-table td, .book-table th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-}
-
-.bookdet-table tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
 .button-container {
     display: flex;
 }
 
-.book_details-table {
+.users-table {
     border-collapse: collapse;
     width: 70%;
 }
 
-.book_details-table th,
+.users-table th,
 .book_details-table td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
 }
 
-.book_details-table tr:nth-child(even) {
+.users-table tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 
 .pagination {
     font-size: 0.5em;
     padding: 0.5em 1em;
+}
+.user-table {
+    border-collapse: collapse;
+    width: 50%;
+}
+
+.user-table td, .book-table th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+.user-table tr:nth-child(even) {
+    background-color: #f2f2f2;
 }

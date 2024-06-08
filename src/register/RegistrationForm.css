@@ -1,0 +1,28 @@
+.add-user {
+    padding: 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem;
+    align-items: center;
+}
+.add-user input[type="text"],
+.add-user input[type="password"] {
+    font-size: 30px;
+}
+.registration-form button {
+    font-size: 25px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.header {
+    color: black;
+    transform: translateY(50px);
+    font-style: revert;
+    font-size: 50px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+
+}

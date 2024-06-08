@@ -7,20 +7,48 @@ import MainPage from "./main-page/MainPage";
 import Loans from "./loans/Loans";
 import BookDetails from "./book-details/BookDetails";
 import Reviews from "./reviews/Reviews";
+import ApiProvider from "./api/dto/ApiProvider";
+import BooksListLibrarian from "./books-list/BooksListLibrarian";
+import SingleBookLibrarian from "./single-book/SingleBookLibrarian";
+import BookDetailsLibrarian from "./book-details/BookDetailsLibrarian";
+import MainPageLibrarian from "./main-page/MainPageLibrarian";
+import AllBookDetails from "./book-details/AllBookDetails";
+import RegistrationForm from "./register/RegistrationForm";
+import Users from "./users/Users";
+import LoansUser from "./loans/LoansUser";
+import AddLoan from "./loans/AddLoan";
+import DeleteLoan from "./loans/DeleteLoan";
+import GetMe from "./users/GetMe";
 
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<LoginForm />} />
-        <Route path="/main" element={<MainPage />} />
-        <Route path="/books" element={<BooksList />} />
-        <Route path="/book/:id" element={<SingleBook />} />
-        <Route path="/book-details/:id" element={<BookDetails />} />
-        <Route path="/reviews" element={<Reviews />} />
-        <Route path="/reviews/:id" element={<Reviews />} />
-        <Route path="/loans" element={<Loans />} />
-      </Routes>
+      <ApiProvider>
+        <Routes>
+          <Route path="/" element={<LoginForm />} />
+          <Route path="/main" element={<MainPage />} />
+          <Route path="/main_librarian" element={<MainPageLibrarian />} />
+          <Route path="/all_bookdetails" element={<AllBookDetails />} />
+          <Route path="/books-librarian" element={<BooksListLibrarian />} />
+          <Route path="/books" element={<BooksList />} />
+          <Route path="/book_librarian/:id" element={<SingleBookLibrarian />} />
+          <Route path="/book/:id" element={<SingleBook />} />
+          <Route
+            path="/book-details_librarian/:id"
+            element={<BookDetailsLibrarian />}
+          />
+          <Route path="/book-details/:id" element={<BookDetails />} />
+          <Route path="/get_me" element={<GetMe />} />
+          <Route path="/reviews" element={<Reviews />} />
+          <Route path="/reviews/:id" element={<Reviews />} />
+          <Route path="/loans" element={<LoansUser />} />
+          <Route path="/loans_librarian" element={<Loans />} />
+          <Route path="/add_user" element={<RegistrationForm />} />
+          <Route path="/users" element={<Users />} />
+          <Route path="/add_loan" element={<AddLoan />} />
+          <Route path="/delete_loan" element={<DeleteLoan />} />
+        </Routes>
+      </ApiProvider>
     </Router>
   );
 }

@@ -1,28 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./SingleBook.css";
-import { Link, useParams } from "react-router-dom";
-import { useApi } from "../api/dto/ApiProvider";
+import { Link } from "react-router-dom";
+import { Button } from "@mui/material";
 
-function SingleBook() {
-  const { id } = useParams<{ id: string }>();
-  const [bookData, setBookData] = useState<any | null>(null);
-  const apiClient = useApi();
-
-  useEffect(() => {
-    if (!id) return;
-
-    apiClient.getBookById(id).then((response) => {
-      if (response.success) {
-        setBookData(response.data);
-      } else {
-        console.error("Failed to fetch book:", response.statusCode);
-      }
-    });
-  }, [apiClient, id]);
-
-  if (!bookData) {
-    return <div>Loading...</div>;
-  }
+function SingleBookLibrarian() {
+  const bookData = {
+    id: 1,
+    tytuł: "Władca Pierścieni",
+    autor: "J.R.R. Tolkien",
+    wydawca: "Wydawnictwo XYZ",
+    isbn: "9788373191723",
+    rok: 1954,
+    dostępność: "dostępna",
+  };
 
   return (
     <div className="single-book">
@@ -41,13 +31,23 @@ function SingleBook() {
           {Object.entries(bookData).map(([key, value]) => (
             <tr key={key}>
               <td>{key}</td>
-              <td>{String(value)}</td>
+              <td>{value}</td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      <div className="button-container">
+        <Button variant="contained" style={{ backgroundColor: "purple" }}>
+          Usuń książkę
+        </Button>
+        &nbsp;&nbsp;&nbsp;
+        <Button variant="contained" style={{ backgroundColor: "purple" }}>
+          Edytuj książkę
+        </Button>
+      </div>
     </div>
   );
 }
 
-export default SingleBook;
+export default SingleBookLibrarian;

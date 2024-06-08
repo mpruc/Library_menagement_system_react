@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./BooksList.css";
-import { useApi } from "../api/dto/ApiProvider"; // Zaimportuj odpowiedni hook z API
+import { Button } from "@mui/material";
+import { useApi } from "../api/dto/ApiProvider";
 
-function BooksList() {
+function BooksListLibrarian() {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ function BooksList() {
     <div className="books-list">
       <nav className="navbar">
         <div className="nav-links">
-          <Link to="/main">Strona główna</Link>
+          <Link to="/main_librarian">Strona główna</Link>
           <Link to="/">Wyloguj</Link>
         </div>
       </nav>
@@ -86,8 +87,13 @@ function BooksList() {
           <span>&gt;</span>
         </button>
       </div>
+      <div className="books-list">
+        <Button variant="contained" style={{ backgroundColor: "purple" }}>
+          Dodaj książkę
+        </Button>
+      </div>
     </div>
   );
 }
 
-export default BooksList;
+export default BooksListLibrarian;

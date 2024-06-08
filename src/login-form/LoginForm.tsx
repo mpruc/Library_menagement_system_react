@@ -1,24 +1,40 @@
 import React, { useCallback } from "react";
-import { Button, TextField } from "@mui/material";
-import { Formik, FormikHelpers } from "formik";
+import {
+  Button,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  TextField,
+} from "@mui/material";
+import { Formik } from "formik";
 import * as yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
 import "./LoginForm.css";
-
-interface FormValues {
-  username: string;
-  password: string;
-}
+import { useApi } from "../api/dto/ApiProvider";
 
 function LoginForm() {
   const navigate = useNavigate();
+  const apiClient = useApi();
   const onSubmit = useCallback(
-    (values: FormValues, formik: FormikHelpers<FormValues>) => {
-      console.log(values);
-      navigate("/main");
-      console.log("/main");
+    (
+      values: { username: string; password: string; role: string },
+      formik: any,
+    ) => {
+      apiClient.login(values).then((response) => {
+        if (response.success) {
+          if (values.role === "librarian") {
+            navigate("/main_librarian");
+          } else if (values.role === "reader") {
+            navigate("/main");
+          }
+        } else {
+          formik.setFieldError("username", "Invalid username or password");
+        }
+      });
     },
-    [navigate],
+    [apiClient, navigate],
   );
 
   const validationSchema = yup.object().shape({
@@ -27,21 +43,21 @@ function LoginForm() {
       .string()
       .required("Pole nie może być puste")
       .min(5, "Hasło nie może być krótsze niż 5 znaków"),
+    role: yup.string().required("Pole nie może być puste"),
   });
 
   return (
     <div>
       <nav className="navbar">
         <div className="nav-links">
-          {/*<Link to="/books">Lista książek</Link>*/}
-          {/*<Link to="/reviews">Recenzje książek</Link>*/}
           <Link to="#">Kontakt</Link>
           <Link to="">O nas</Link>
         </div>
       </nav>
       <header className="header">Zaloguj się</header>
+
       <Formik
-        initialValues={{ username: "", password: "" }}
+        initialValues={{ username: "", password: "", role: "reader" }}
         onSubmit={onSubmit}
         validationSchema={validationSchema}
         validateOnChange
@@ -54,6 +70,29 @@ function LoginForm() {
             noValidate
             onSubmit={formik.handleSubmit}
           >
+            <FormControl component="fieldset">
+              <FormLabel component="legend">Rola</FormLabel>
+              <RadioGroup
+                aria-label="role"
+                name="role"
+                value={formik.values.role}
+                onChange={formik.handleChange}
+                row
+                style={{ display: "flex", flexDirection: "row" }}
+              >
+                <FormControlLabel
+                  value="librarian"
+                  control={<Radio />}
+                  label="Librarian"
+                />
+                <FormControlLabel
+                  value="reader"
+                  control={<Radio />}
+                  label="Reader"
+                />
+              </RadioGroup>
+            </FormControl>
+
             <TextField
               id="username"
               name="username"

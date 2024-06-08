@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./MainPage.css";
 
-function MainPage() {
+function MainPageLibrarian() {
   const navigate = useNavigate();
 
   const handleNavigation = (path: string) => {
@@ -12,7 +12,6 @@ function MainPage() {
     <div className="main-page">
       <nav className="navbar">
         <div className="nav-links">
-          <Link to="/books">Lista książek </Link>
           <Link to="/reviews">Recenzje</Link>
           <Link to="#">Kontakt</Link>
           <Link to="/">Wyloguj</Link>
@@ -23,10 +22,36 @@ function MainPage() {
         <ul className="list-buttons">
           <li>
             <button
-              onClick={() => handleNavigation("/loans")}
+              onClick={() => handleNavigation("/books-librarian")}
+              className="list-button"
+            >
+              Lista książek
+            </button>
+          </li>
+
+          <li>
+            <button
+              onClick={() => handleNavigation("/users")}
+              className="list-button"
+            >
+              Użytkownicy
+            </button>
+          </li>
+
+          <li>
+            <button
+              onClick={() => handleNavigation("/loans_librarian")}
               className="list-button"
             >
               Wypożyczenia
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => handleNavigation("/all_bookdetails")}
+              className="list-button"
+            >
+              Szczegóły książek
             </button>
           </li>
           <li>
@@ -37,18 +62,10 @@ function MainPage() {
               Moje konto
             </button>
           </li>
-          <li>
-            <button
-              onClick={() => handleNavigation("")}
-              className="list-button"
-            >
-              Moje recenzje
-            </button>
-          </li>
         </ul>
       </div>
     </div>
   );
 }
 
-export default MainPage;
+export default MainPageLibrarian;
