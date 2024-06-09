@@ -3,8 +3,15 @@ import * as yup from "yup";
 import { Link } from "react-router-dom";
 import "./AddLoan.css";
 import { Formik } from "formik";
-import { Button, TextField } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 import { useApi } from "../api/dto/ApiProvider";
+import { useTranslation } from "react-i18next";
 
 function AddLoan() {
   const apiClient = useApi();
@@ -13,7 +20,7 @@ function AddLoan() {
   const onSubmit = useCallback(
     (
       values: {
-        bookId: number;
+        book: number;
         user: number;
         loanDate: string;
         dueDate: string;
@@ -22,10 +29,10 @@ function AddLoan() {
       formik: any,
     ) => {
       console.log("Submitting values:", values);
-      const { bookId, user, loanDate, dueDate, returnDate } = values;
+      const { book, user, loanDate, dueDate, returnDate } = values;
 
       const loanData = {
-        bookId: bookId,
+        book: book,
         user: user,
         loanDate: new Date(loanDate).toISOString(),
         dueDate: new Date(dueDate).toISOString(),
@@ -59,24 +66,45 @@ function AddLoan() {
     [apiClient],
   );
 
+  const { t, i18n } = useTranslation();
+  const [language, setLanguage] = useState(i18n.language);
+
+  const handleChangeLanguage = (event: any) => {
+    const selectedLanguage = event.target.value;
+    setLanguage(selectedLanguage);
+    i18n.changeLanguage(selectedLanguage);
+  };
+
   const initialValues = {
     user: 1,
-    bookId: 1,
+    book: 1,
     loanDate: "",
     dueDate: "",
     returnDate: null,
   };
 
   const validationSchema = yup.object().shape({
-    user: yup.string().required("Pole nie może być puste"),
-    bookId: yup.string().required("Pole nie może być puste"),
-    loanDate: yup.string().required("Pole nie może być puste"),
-    dueDate: yup.string().required("Pole nie może być puste"),
+    user: yup.number().required(t("fieldCannotBeEmpty")),
+    bookId: yup.number().required(t("fieldCannotBeEmpty")),
+    loanDate: yup.string().required(t("fieldCannotBeEmpty")),
+    dueDate: yup.string().required(t("fieldCannotBeEmpty")),
   });
 
   return (
     <div>
-      <header className="header">Dodaj wypożyczenie</header>
+      <header className="header">{t("addLoan")}</header>
+      <div className="language-selector">
+        <FormControl>
+          <Select
+            value={language}
+            onChange={handleChangeLanguage}
+            label={t("language")}
+          >
+            <MenuItem value="en">EN</MenuItem>
+            <MenuItem value="pl">PL</MenuItem>
+          </Select>
+        </FormControl>
+      </div>
 
       <Formik
         initialValues={initialValues}
@@ -95,7 +123,7 @@ function AddLoan() {
             <TextField
               id="user"
               name="user"
-              label="Id użytkownika"
+              label={t("user")}
               variant="standard"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -107,19 +135,19 @@ function AddLoan() {
             <TextField
               id="bookId"
               name="bookId"
-              label="Id książki"
+              label={t("bookId")}
               variant="standard"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={formik.touched.bookId && !!formik.errors.bookId}
-              helperText={formik.touched.bookId && formik.errors.bookId}
+              error={formik.touched.book && !!formik.errors.book}
+              helperText={formik.touched.book && formik.errors.book}
               InputLabelProps={{ style: { fontSize: "25px" } }}
             />
 
             <TextField
               id="loanDate"
               name="loanDate"
-              label="Data wypożyczenia"
+              label={t("loanDate")}
               variant="standard"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -131,7 +159,7 @@ function AddLoan() {
             <TextField
               id="dueDate"
               name="dueDate"
-              label="Data wymaganego zwrotu"
+              label={t("dueDate")}
               variant="standard"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -143,7 +171,7 @@ function AddLoan() {
             <TextField
               id="returnDate"
               name="returnDate"
-              label="Data zwrotu"
+              label={t("returnDate")}
               variant="standard"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -160,7 +188,7 @@ function AddLoan() {
                 backgroundColor: formik.isValid && formik.dirty ? "purple" : "",
               }}
             >
-              Dodaj wypożyczenie
+              {t("addLoan")}
             </Button>
 
             <Button variant="contained" style={{ backgroundColor: "purple" }}>
@@ -168,7 +196,7 @@ function AddLoan() {
                 to="/loans_librarian"
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-                Wróc do listy wypożyczeń
+                {t("backToListOfLoans")}
               </Link>
             </Button>
           </form>

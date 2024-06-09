@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import {
   Button,
   FormControl,
@@ -7,16 +7,28 @@ import {
   Radio,
   RadioGroup,
   TextField,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import "./LoginForm.css";
 import { useApi } from "../api/dto/ApiProvider";
 
 function LoginForm() {
   const navigate = useNavigate();
   const apiClient = useApi();
+  const { t, i18n } = useTranslation();
+  const [language, setLanguage] = useState(i18n.language);
+
+  const handleChangeLanguage = (event: any) => {
+    const selectedLanguage = event.target.value;
+    setLanguage(selectedLanguage);
+    i18n.changeLanguage(selectedLanguage);
+  };
+
   const onSubmit = useCallback(
     (
       values: { username: string; password: string; role: string },
@@ -30,31 +42,41 @@ function LoginForm() {
             navigate("/main");
           }
         } else {
-          formik.setFieldError("username", "Invalid username or password");
+          formik.setFieldError("username", t("invalidUsernameOrPassword"));
         }
       });
     },
-    [apiClient, navigate],
+    [apiClient, navigate, t],
   );
 
   const validationSchema = yup.object().shape({
-    username: yup.string().required("Pole nie może być puste"),
+    username: yup.string().required(t("fieldCannotBeEmpty")),
     password: yup
       .string()
-      .required("Pole nie może być puste")
-      .min(5, "Hasło nie może być krótsze niż 5 znaków"),
-    role: yup.string().required("Pole nie może być puste"),
+      .required(t("fieldCannotBeEmpty"))
+      .min(5, t("passwordMinLength")),
+    role: yup.string().required(t("fieldCannotBeEmpty")),
   });
 
   return (
     <div>
       <nav className="navbar">
         <div className="nav-links">
-          <Link to="#">Kontakt</Link>
-          <Link to="">O nas</Link>
+          <Link to="#">{t("contact")}</Link>
+          <Link to="">{t("aboutUs")}</Link>
         </div>
+        <FormControl sx={{ backgroundColor: "white" }}>
+          <Select
+            value={language}
+            onChange={handleChangeLanguage}
+            label={t("language")}
+          >
+            <MenuItem value="en">EN</MenuItem>
+            <MenuItem value="pl">PL</MenuItem>
+          </Select>
+        </FormControl>
       </nav>
-      <header className="header">Zaloguj się</header>
+      <header className="header">{t("login")}</header>
 
       <Formik
         initialValues={{ username: "", password: "", role: "reader" }}
@@ -71,7 +93,9 @@ function LoginForm() {
             onSubmit={formik.handleSubmit}
           >
             <FormControl component="fieldset">
-              <FormLabel component="legend">Rola</FormLabel>
+              <FormLabel component="legend" style={{ fontSize: "25px" }}>
+                {t("role")}
+              </FormLabel>
               <RadioGroup
                 aria-label="role"
                 name="role"
@@ -83,12 +107,13 @@ function LoginForm() {
                 <FormControlLabel
                   value="librarian"
                   control={<Radio />}
-                  label="Librarian"
+                  label={t("librarian")}
                 />
                 <FormControlLabel
                   value="reader"
                   control={<Radio />}
-                  label="Reader"
+                  label={t("reader")}
+                  style={{ fontSize: "25px" }}
                 />
               </RadioGroup>
             </FormControl>
@@ -96,7 +121,7 @@ function LoginForm() {
             <TextField
               id="username"
               name="username"
-              label="Nazwa użytkownika"
+              label={t("username")}
               variant="standard"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -107,7 +132,7 @@ function LoginForm() {
             <TextField
               id="password"
               name="password"
-              label="Hasło"
+              label={t("password")}
               variant="standard"
               type="password"
               onChange={formik.handleChange}
@@ -125,7 +150,7 @@ function LoginForm() {
                 backgroundColor: formik.isValid && formik.dirty ? "purple" : "",
               }}
             >
-              Zaloguj się
+              {t("login")}
             </Button>
           </form>
         )}

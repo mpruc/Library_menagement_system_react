@@ -19,36 +19,49 @@ import LoansUser from "./loans/LoansUser";
 import AddLoan from "./loans/AddLoan";
 import DeleteLoan from "./loans/DeleteLoan";
 import GetMe from "./users/GetMe";
+import AddBook from "./books-list/AddBook";
+import DeleteBook from "./books-list/DeleteBook";
+import { I18nextProvider } from "react-i18next";
+import i18n from "./i18n";
+import GetMeLibrarian from "./users/GetMeLibrarian";
 
 function App() {
   return (
     <Router>
-      <ApiProvider>
-        <Routes>
-          <Route path="/" element={<LoginForm />} />
-          <Route path="/main" element={<MainPage />} />
-          <Route path="/main_librarian" element={<MainPageLibrarian />} />
-          <Route path="/all_bookdetails" element={<AllBookDetails />} />
-          <Route path="/books-librarian" element={<BooksListLibrarian />} />
-          <Route path="/books" element={<BooksList />} />
-          <Route path="/book_librarian/:id" element={<SingleBookLibrarian />} />
-          <Route path="/book/:id" element={<SingleBook />} />
-          <Route
-            path="/book-details_librarian/:id"
-            element={<BookDetailsLibrarian />}
-          />
-          <Route path="/book-details/:id" element={<BookDetails />} />
-          <Route path="/get_me" element={<GetMe />} />
-          <Route path="/reviews" element={<Reviews />} />
-          <Route path="/reviews/:id" element={<Reviews />} />
-          <Route path="/loans" element={<LoansUser />} />
-          <Route path="/loans_librarian" element={<Loans />} />
-          <Route path="/add_user" element={<RegistrationForm />} />
-          <Route path="/users" element={<Users />} />
-          <Route path="/add_loan" element={<AddLoan />} />
-          <Route path="/delete_loan" element={<DeleteLoan />} />
-        </Routes>
-      </ApiProvider>
+      <I18nextProvider i18n={i18n}>
+        <ApiProvider>
+          <Routes>
+            <Route path="/" element={<LoginForm />} />
+            <Route path="/main" element={<MainPage />} />
+            <Route path="/main_librarian" element={<MainPageLibrarian />} />
+            <Route path="/all_bookdetails" element={<AllBookDetails />} />
+            <Route path="/books-librarian" element={<BooksListLibrarian />} />
+            <Route path="/books" element={<BooksList />} />
+            <Route
+              path="/book_librarian/:id"
+              element={<SingleBookLibrarian />}
+            />
+            <Route path="/book/:id" element={<SingleBook />} />
+            <Route
+              path="/book-details_librarian/:id"
+              element={<BookDetailsLibrarian />}
+            />
+            <Route path="/book-details/:id" element={<BookDetails />} />
+            <Route path="/get_me" element={<GetMe />} />
+            <Route path="/get_me_librarian" element={<GetMeLibrarian />} />
+            <Route path="/reviews" element={<Reviews />} />
+            <Route path="/reviews/:id" element={<Reviews />} />
+            <Route path="/loans" element={<LoansUser />} />
+            <Route path="/loans_librarian" element={<Loans />} />
+            <Route path="/add_user" element={<RegistrationForm />} />
+            <Route path="/users" element={<Users />} />
+            <Route path="/add_loan" element={<AddLoan />} />
+            <Route path="/delete_loan" element={<DeleteLoan />} />
+            <Route path="/add_book" element={<AddBook />} />
+            <Route path="/delete_book" element={<DeleteBook />} />
+          </Routes>
+        </ApiProvider>
+      </I18nextProvider>
     </Router>
   );
 }

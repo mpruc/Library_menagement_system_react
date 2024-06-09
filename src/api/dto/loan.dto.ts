@@ -1,5 +1,5 @@
 export interface CreateLoanDto {
-  bookId: number;
+  book: number;
   user: number;
   loanDate: string;
   dueDate: string;
@@ -21,7 +21,7 @@ export interface GetLoanResponseDto {
 
 export interface CreateLoanResponseDto {
   loanId: number;
-  bookId: number;
+  book: number;
   user: number;
   loanDate: string;
   dueDate: string;

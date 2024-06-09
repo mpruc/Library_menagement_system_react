@@ -47,6 +47,14 @@
     border-collapse: collapse;
     width: 50%;
 }
+.users button {
+    font-size: 25px;
+}
+
+.pagination button {
+    font-size: 15px;
+    padding: 0.5em 1em
+}
 
 .button-container {
     display: flex;

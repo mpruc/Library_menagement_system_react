@@ -13,7 +13,6 @@
 
 .header {
     color: black;
-    transform: translateY(50px);
     font-style: revert;
     font-size: 50px;
     font-weight: bold;

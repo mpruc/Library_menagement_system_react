@@ -8,15 +8,21 @@ import {
   FormControl,
   FormControlLabel,
   FormLabel,
+  MenuItem,
   Radio,
   RadioGroup,
+  Select,
   TextField,
 } from "@mui/material";
 import { useApi } from "../api/dto/ApiProvider";
+import { useTranslation } from "react-i18next";
 
 function RegistrationForm() {
   const apiClient = useApi();
   const [successMessage, setSuccessMessage] = useState("");
+
+  const { t, i18n } = useTranslation();
+  const [language, setLanguage] = useState(i18n.language);
 
   const onSubmit = useCallback(
     (
@@ -35,12 +41,12 @@ function RegistrationForm() {
         .then((response) => {
           console.log("Received response:", response);
           if (response.success) {
-            setSuccessMessage("Dodano użytkownika!");
+            setSuccessMessage(t("userAdded"));
             formik.resetForm();
           } else {
             formik.setFieldError(
               "username",
-              `Dodanie użytkownika nie powiodło się: ${response.statusCode}`,
+              `${t("addUserFailed")}: ${response.statusCode}`,
             );
           }
         })
@@ -48,12 +54,18 @@ function RegistrationForm() {
           console.error("Error during user registration:", error);
           formik.setFieldError(
             "username",
-            `Wystąpił błąd podczas rejestracji: ${error.message}`,
+            `${t("registrationError")}: ${error.message}`,
           );
         });
     },
-    [apiClient],
+    [apiClient, t],
   );
+
+  const handleChangeLanguage = (event: any) => {
+    const selectedLanguage = event.target.value;
+    setLanguage(selectedLanguage);
+    i18n.changeLanguage(selectedLanguage);
+  };
 
   const initialValues = {
     username: "",
@@ -64,22 +76,31 @@ function RegistrationForm() {
   };
 
   const validationSchema = yup.object().shape({
-    username: yup.string().required("Pole nie może być puste"),
+    username: yup.string().required(t("fieldRequired")),
     password: yup
       .string()
-      .required("Pole nie może być puste")
-      .min(5, "Hasło nie może być krótsze niż 5 znaków"),
-    role: yup.string().required("Pole nie może być puste"),
-    name: yup.string().required("Pole nie może być puste"),
-    email: yup
-      .string()
-      .email("Nieprawidłowy adres email")
-      .required("Pole nie może być puste"),
+      .required(t("fieldRequired"))
+      .min(5, t("passwordMinLength")),
+    role: yup.string().required(t("fieldRequired")),
+    name: yup.string().required(t("fieldRequired")),
+    email: yup.string().email(t("invalidEmail")).required(t("fieldRequired")),
   });
 
   return (
     <div>
-      <header className="header">Dodaj użytkownika</header>
+      <header className="header">{t("addUser")}</header>
+      <div className="language-selector">
+        <FormControl>
+          <Select
+            value={language}
+            onChange={handleChangeLanguage}
+            label={t("language")}
+          >
+            <MenuItem value="en">EN</MenuItem>
+            <MenuItem value="pl">PL</MenuItem>
+          </Select>
+        </FormControl>
+      </div>
 
       <Formik
         initialValues={initialValues}
@@ -96,7 +117,7 @@ function RegistrationForm() {
             onSubmit={formik.handleSubmit}
           >
             <FormControl component="fieldset">
-              <FormLabel component="legend">Rola</FormLabel>
+              <FormLabel component="legend">{t("role")}</FormLabel>
               <RadioGroup
                 aria-label="role"
                 name="role"
@@ -108,12 +129,12 @@ function RegistrationForm() {
                 <FormControlLabel
                   value="ROLE_LIBRARIAN"
                   control={<Radio />}
-                  label="Librarian"
+                  label={t("librarian")}
                 />
                 <FormControlLabel
                   value="ROLE_READER"
                   control={<Radio />}
-                  label="Reader"
+                  label={t("reader")}
                 />
               </RadioGroup>
             </FormControl>
@@ -121,7 +142,7 @@ function RegistrationForm() {
             <TextField
               id="username"
               name="username"
-              label="Nazwa użytkownika"
+              label={t("username")}
               variant="standard"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -133,7 +154,7 @@ function RegistrationForm() {
             <TextField
               id="password"
               name="password"
-              label="Hasło"
+              label={t("password")}
               variant="standard"
               type="password"
               onChange={formik.handleChange}
@@ -146,7 +167,7 @@ function RegistrationForm() {
             <TextField
               id="name"
               name="name"
-              label="Imię"
+              label={t("name")}
               variant="standard"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -158,7 +179,7 @@ function RegistrationForm() {
             <TextField
               id="email"
               name="email"
-              label="Email"
+              label={t("email")}
               variant="standard"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -175,7 +196,7 @@ function RegistrationForm() {
                 backgroundColor: formik.isValid && formik.dirty ? "purple" : "",
               }}
             >
-              Dodaj użytkownika
+              {t("addUser")}
             </Button>
 
             <Button variant="contained" style={{ backgroundColor: "purple" }}>
@@ -183,7 +204,7 @@ function RegistrationForm() {
                 to="/users"
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-                Wróc do listy użytkowników
+                {t("backToUserList")}
               </Link>
             </Button>
           </form>

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./Loans.css";
-import { Button } from "@mui/material";
+import { Button, FormControl, MenuItem, Select } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
 import { useApi } from "../api/dto/ApiProvider";
 import { GetLoanResponseDto } from "../api/dto/loan.dto";
+import { useTranslation } from "react-i18next";
 
 function Loans() {
+  const { t, i18n } = useTranslation();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [loansPerPage] = useState<number>(10);
 
@@ -32,6 +34,14 @@ function Loans() {
     });
   }, [apiClient]);
 
+  const [language, setLanguage] = useState(i18n.language);
+
+  const handleChangeLanguage = (event: any) => {
+    const selectedLanguage = event.target.value;
+    setLanguage(selectedLanguage);
+    i18n.changeLanguage(selectedLanguage);
+  };
+
   const indexOfLastLoan = currentPage * loansPerPage;
   const indexOfFirstLoan = indexOfLastLoan - loansPerPage;
   const currentLoans = loanData.slice(indexOfFirstLoan, indexOfLastLoan);
@@ -40,20 +50,30 @@ function Loans() {
     <div className="loans">
       <nav className="navbar">
         <div className="nav-links">
-          <Link to="/main_librarian">Strona główna</Link>
-          <Link to="/"> Wyloguj</Link>
+          <Link to="/main_librarian">{t("mainPage")}</Link>
+          <Link to="/">{t("logout")}</Link>
+          <FormControl sx={{ backgroundColor: "white" }}>
+            <Select
+              value={language}
+              onChange={handleChangeLanguage}
+              label={t("language")}
+            >
+              <MenuItem value="en">EN</MenuItem>
+              <MenuItem value="pl">PL</MenuItem>
+            </Select>
+          </FormControl>
         </div>
       </nav>
-      <header className="header">Wypożyczenia książek</header>
+      <header className="header">{t("bookLoans")}</header>
       <table className="loan-table">
         <thead>
           <tr>
-            <th>ID wypożyczenia</th>
-            <th>Książka</th>
-            <th>Użytkownik</th>
-            <th>Data wypożyczenia</th>
-            <th>Wymagany termin oddania</th>
-            <th>Data zwrotu</th>
+            <th>{t("loanId")}</th>
+            <th>{t("book")}</th>
+            <th>{t("user")}</th>
+            <th>{t("loanDate")}</th>
+            <th>{t("dueDate")}</th>
+            <th>{t("returnDate")}</th>
           </tr>
         </thead>
         <tbody>
@@ -98,13 +118,13 @@ function Loans() {
       <div className="add-loan-button">
         <Link to="/add_loan">
           <Button variant="contained" style={{ backgroundColor: "purple" }}>
-            Dodaj wypożyczenie
+            {t("addLoan")}
           </Button>
         </Link>
         &nbsp;&nbsp;&nbsp;
         <Link to="/delete_loan">
           <Button variant="contained" style={{ backgroundColor: "purple" }}>
-            Usuń wypożyczenie
+            {t("deleteLoan")}
           </Button>
         </Link>
       </div>

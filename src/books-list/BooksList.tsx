@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./BooksList.css";
-import { useApi } from "../api/dto/ApiProvider"; // Zaimportuj odpowiedni hook z API
+import "../pagination.css";
+import { useApi } from "../api/dto/ApiProvider";
+import { useTranslation } from "react-i18next";
+import { FormControl, MenuItem, Select } from "@mui/material";
 
 function BooksList() {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -12,16 +15,24 @@ function BooksList() {
   const booksPerPage = 15;
   const indexOfLastBook = currentPage * booksPerPage;
   const indexOfFirstBook = indexOfLastBook - booksPerPage;
+  const { t, i18n } = useTranslation();
+  const [language, setLanguage] = useState(i18n.language);
+
+  const handleChangeLanguage = (event: any) => {
+    const selectedLanguage = event.target.value;
+    setLanguage(selectedLanguage);
+    i18n.changeLanguage(selectedLanguage);
+  };
 
   useEffect(() => {
     apiClient.getBooks().then((response) => {
       if (response.success) {
         setBooks(response.data);
       } else {
-        console.error("Failed to fetch books:", response.statusCode);
+        console.error(t("fetchBooksFailed"), response.statusCode);
       }
     });
-  }, [apiClient]);
+  }, [apiClient, t]);
 
   const filteredBooks = books
     .filter((book) =>
@@ -37,14 +48,24 @@ function BooksList() {
     <div className="books-list">
       <nav className="navbar">
         <div className="nav-links">
-          <Link to="/main">Strona główna</Link>
-          <Link to="/">Wyloguj</Link>
+          <Link to="/main">{t("homePage")}</Link>
+          <Link to="/">{t("logout")}</Link>
+          <FormControl sx={{ backgroundColor: "white" }}>
+            <Select
+              value={language}
+              onChange={handleChangeLanguage}
+              label={t("language")}
+            >
+              <MenuItem value="en">EN</MenuItem>
+              <MenuItem value="pl">PL</MenuItem>
+            </Select>
+          </FormControl>
         </div>
       </nav>
-      <header className="header">Lista książek</header>
+      <header className="header">{t("booksList")}</header>
       <input
         type="text"
-        placeholder="Wyszukaj książkę..."
+        placeholder={t("searchBook")}
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         className="search-bar"

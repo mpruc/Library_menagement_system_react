@@ -5,12 +5,11 @@ import { useApi } from "../api/dto/ApiProvider";
 import { useTranslation } from "react-i18next";
 import { FormControl, MenuItem, Select } from "@mui/material";
 
-function GetMe() {
+function GetMeLibrarian() {
   const [userData, setUserData] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const apiClient = useApi();
-
   const { t, i18n } = useTranslation();
   const [language, setLanguage] = useState(i18n.language);
 
@@ -62,8 +61,8 @@ function GetMe() {
     <div className="single-book">
       <nav className="navbar">
         <div className="nav-links">
-          <Link to="/books">{t("booksList")}</Link>
-          <Link to="/main">{t("homePage")}</Link>
+          <Link to="/books-librarian">{t("booksList")}</Link>
+          <Link to="/main_librarian">{t("homePage")}</Link>
           <Link to="/">{t("logout")}</Link>
           <FormControl sx={{ backgroundColor: "white" }}>
             <Select
@@ -92,4 +91,4 @@ function GetMe() {
   );
 }
 
-export default GetMe;
+export default GetMeLibrarian;

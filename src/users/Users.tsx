@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "./Users.css";
-import { Button } from "@mui/material";
+import { Button, FormControl, MenuItem, Select } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
 import { useApi } from "../api/dto/ApiProvider";
+import { useTranslation } from "react-i18next";
 
 interface User {
   id: number;
@@ -34,23 +35,41 @@ function Users() {
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+  const { t, i18n } = useTranslation();
+  const [language, setLanguage] = useState(i18n.language);
+
+  const handleChangeLanguage = (event: any) => {
+    const selectedLanguage = event.target.value;
+    setLanguage(selectedLanguage);
+    i18n.changeLanguage(selectedLanguage);
+  };
 
   return (
     <div className="users">
       <nav className="navbar">
         <div className="nav-links">
-          <Link to="/books-librarian">Lista książek</Link>
-          <Link to="/main_librarian">Strona główna</Link>
-          <Link to="/">Wyloguj</Link>
+          <Link to="/books-librarian">{t("booksList")}</Link>
+          <Link to="/main_librarian">{t("homePage")}</Link>
+          <Link to="/">{t("logout")}</Link>
+          <FormControl sx={{ backgroundColor: "white" }}>
+            <Select
+              value={language}
+              onChange={handleChangeLanguage}
+              label={t("language")}
+            >
+              <MenuItem value="en">EN</MenuItem>
+              <MenuItem value="pl">PL</MenuItem>
+            </Select>
+          </FormControl>
         </div>
       </nav>
-      <header className="header">Użytkownicy</header>
+      <header className="header">{t("users")}</header>
       <table className="users-table">
         <thead>
           <tr>
-            <th>ID użytkownika</th>
-            <th>Imię i nazwisko</th>
-            <th>Email</th>
+            <th>{t("userId")}</th>
+            <th>{t("nameAndSurname")}</th>
+            <th>{t("email")}</th>
           </tr>
         </thead>
         <tbody>
@@ -65,6 +84,7 @@ function Users() {
       </table>
       <div className="pagination">
         <button
+          className="pagination-button"
           onClick={() =>
             setCurrentPage((prevPage) =>
               prevPage > 1 ? prevPage - 1 : prevPage,
@@ -88,7 +108,7 @@ function Users() {
       <div className="add-user">
         <Link to="/add_user">
           <Button variant="contained" style={{ backgroundColor: "purple" }}>
-            Dodaj użytkownika
+            {t("addUser")}
           </Button>
         </Link>
       </div>

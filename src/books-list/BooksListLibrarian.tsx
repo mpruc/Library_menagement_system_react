@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./BooksList.css";
-import { Button } from "@mui/material";
+import "../pagination.css";
+import { Button, FormControl, MenuItem, Select } from "@mui/material";
 import { useApi } from "../api/dto/ApiProvider";
+import { useTranslation } from "react-i18next";
 
 function BooksListLibrarian() {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -31,21 +33,40 @@ function BooksListLibrarian() {
     .slice(indexOfFirstBook, indexOfLastBook);
 
   const handleBookClick = (bookId: number) => {
-    navigate(`/book/${bookId}`);
+    navigate(`/book_librarian/${bookId}`);
+  };
+
+  const { t, i18n } = useTranslation();
+  const [language, setLanguage] = useState(i18n.language);
+
+  const handleChangeLanguage = (event: any) => {
+    const selectedLanguage = event.target.value;
+    setLanguage(selectedLanguage);
+    i18n.changeLanguage(selectedLanguage);
   };
 
   return (
     <div className="books-list">
       <nav className="navbar">
         <div className="nav-links">
-          <Link to="/main_librarian">Strona główna</Link>
-          <Link to="/">Wyloguj</Link>
+          <Link to="/main_librarian">{t("mainPage")}</Link>
+          <Link to="/">{t("logout")}</Link>
+          <FormControl sx={{ backgroundColor: "white" }}>
+            <Select
+              value={language}
+              onChange={handleChangeLanguage}
+              label={t("language")}
+            >
+              <MenuItem value="en">EN</MenuItem>
+              <MenuItem value="pl">PL</MenuItem>
+            </Select>
+          </FormControl>
         </div>
       </nav>
-      <header className="header">Lista książek</header>
+      <header className="header">{t("booksList")}</header>
       <input
         type="text"
-        placeholder="Wyszukaj książkę..."
+        placeholder={t("searchBook")}
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         className="search-bar"
@@ -88,9 +109,16 @@ function BooksListLibrarian() {
         </button>
       </div>
       <div className="books-list">
-        <Button variant="contained" style={{ backgroundColor: "purple" }}>
-          Dodaj książkę
-        </Button>
+        <Link to="/add_book">
+          <Button variant="contained" style={{ backgroundColor: "purple" }}>
+            {t("addBook")}
+          </Button>
+        </Link>
+        <Link to="/delete_book">
+          <Button variant="contained" style={{ backgroundColor: "purple" }}>
+            {t("deleteBook")}
+          </Button>
+        </Link>
       </div>
     </div>
   );
