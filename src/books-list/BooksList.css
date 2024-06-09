@@ -64,8 +64,24 @@
     cursor: pointer;
 }
 .pagination-btn {
-    font-size: 1em;
+    font-size: 10px;
     padding: 0.5em 1em;
 }
-
-
+.books-list input[type="text"] {
+    font-size: 30px;
+}
+.books-list button {
+    font-size: 25px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.language-selector {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+.language-selector {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}

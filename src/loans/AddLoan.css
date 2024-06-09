@@ -1,0 +1,28 @@
+.add-loan {
+    padding: 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem;
+    align-items: center;
+}
+.add-loan input[type="text"],
+.add-loan input[type="password"] {
+    font-size: 30px;
+}
+.add-loan button {
+    font-size: 25px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.header {
+    color: black;
+    transform: translateY(50px);
+    font-style: revert;
+    font-size: 50px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+
+}

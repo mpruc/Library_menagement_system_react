@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./MainPage.css";
-import { useTranslation } from "react-i18next";
 import { FormControl, MenuItem, Select } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
-function MainPage() {
+function MainPageLibrarian() {
   const navigate = useNavigate();
+
+  const handleNavigation = (path: string) => {
+    navigate(path);
+  };
   const { t, i18n } = useTranslation();
   const [language, setLanguage] = useState(i18n.language);
 
@@ -15,15 +19,10 @@ function MainPage() {
     i18n.changeLanguage(selectedLanguage);
   };
 
-  const handleNavigation = (path: string) => {
-    navigate(path);
-  };
-
   return (
     <div className="main-page">
       <nav className="navbar">
         <div className="nav-links">
-          <Link to="/books">{t("booksList")}</Link>
           <Link to="/reviews">{t("reviews")}</Link>
           <Link to="#">{t("contact")}</Link>
           <Link to="/">{t("logout")}</Link>
@@ -45,26 +44,42 @@ function MainPage() {
           <ul className="list-buttons">
             <li>
               <button
-                onClick={() => handleNavigation("/loans")}
+                onClick={() => handleNavigation("/books-librarian")}
                 className="list-button"
               >
-                {t("myLoans")}
+                {t("booksList")}
               </button>
             </li>
             <li>
               <button
-                onClick={() => handleNavigation("/get_me")}
+                onClick={() => handleNavigation("/users")}
+                className="list-button"
+              >
+                {t("users")}
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => handleNavigation("/loans_librarian")}
+                className="list-button"
+              >
+                {t("loans")}
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => handleNavigation("/all_bookdetails")}
+                className="list-button"
+              >
+                {t("bookDetails")}
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => handleNavigation("/get_me_librarian")}
                 className="list-button"
               >
                 {t("myAccount")}
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => handleNavigation("")}
-                className="list-button"
-              >
-                {t("myReviews")}
               </button>
             </li>
           </ul>
@@ -74,4 +89,4 @@ function MainPage() {
   );
 }
 
-export default MainPage;
+export default MainPageLibrarian;

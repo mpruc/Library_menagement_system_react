@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
-import "./SingleBook.css";
-import { Link, useParams } from "react-router-dom";
+import "./Users.css";
+import { Link } from "react-router-dom";
 import { useApi } from "../api/dto/ApiProvider";
 import { useTranslation } from "react-i18next";
 import { FormControl, MenuItem, Select } from "@mui/material";
 
-function SingleBook() {
-  const { id } = useParams<{ id: string }>();
-  const [bookData, setBookData] = useState<any | null>(null);
+function GetMe() {
+  const [userData, setUserData] = useState<any | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const apiClient = useApi();
+
   const { t, i18n } = useTranslation();
   const [language, setLanguage] = useState(i18n.language);
 
@@ -19,27 +21,47 @@ function SingleBook() {
   };
 
   useEffect(() => {
-    if (!id) return;
-
-    apiClient.getBookById(id).then((response) => {
-      if (response.success) {
-        setBookData(response.data);
-      } else {
-        console.error(t("fetchBookFailed"), response.statusCode);
+    const fetchUserData = async () => {
+      try {
+        const response = await apiClient.getMe();
+        if (response.success) {
+          setUserData(response.data);
+        } else {
+          console.error(t("fetchUserFailed"), response.statusCode);
+          setError(t("fetchUserFailedWithCode", { code: response.statusCode }));
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          console.error(t("fetchUserError"), error);
+          setError(t("fetchUserErrorWithMessage", { message: error.message }));
+        } else {
+          console.error(t("unexpectedError"), error);
+          setError(t("unexpectedError"));
+        }
+      } finally {
+        setLoading(false);
       }
-    });
-  }, [apiClient, id, t]);
+    };
 
-  if (!bookData) {
+    fetchUserData();
+  }, [apiClient, t]);
+
+  if (loading) {
     return <div>{t("loading")}</div>;
+  }
+
+  if (error) {
+    return (
+      <div>
+        {t("error")}: {error}
+      </div>
+    );
   }
 
   return (
     <div className="single-book">
       <nav className="navbar">
         <div className="nav-links">
-          <Link to={`/book-details/${bookData.id}`}>{t("bookDetails")}</Link>
-          <Link to={`/reviews/${bookData.id}`}>{t("bookReviews")}</Link>
           <Link to="/books">{t("booksList")}</Link>
           <Link to="/main">{t("homePage")}</Link>
           <Link to="/">{t("logout")}</Link>
@@ -55,10 +77,10 @@ function SingleBook() {
           </FormControl>
         </div>
       </nav>
-      <header className="header">{t("bookInfo")}</header>
-      <table className="book-table">
+      <header className="header">{t("myAccount")}</header>
+      <table className="user-table">
         <tbody>
-          {Object.entries(bookData).map(([key, value]) => (
+          {Object.entries(userData).map(([key, value]) => (
             <tr key={key}>
               <td>{t(key)}</td>
               <td>{String(value)}</td>
@@ -70,4 +92,4 @@ function SingleBook() {
   );
 }
 
-export default SingleBook;
+export default GetMe;

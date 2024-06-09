@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./BooksList.css";
 import "../pagination.css";
+import { Button, FormControl, MenuItem, Select } from "@mui/material";
 import { useApi } from "../api/dto/ApiProvider";
 import { useTranslation } from "react-i18next";
-import { FormControl, MenuItem, Select } from "@mui/material";
 
-function BooksList() {
+function BooksListLibrarian() {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const navigate = useNavigate();
@@ -15,6 +15,27 @@ function BooksList() {
   const booksPerPage = 15;
   const indexOfLastBook = currentPage * booksPerPage;
   const indexOfFirstBook = indexOfLastBook - booksPerPage;
+
+  useEffect(() => {
+    apiClient.getBooks().then((response) => {
+      if (response.success) {
+        setBooks(response.data);
+      } else {
+        console.error("Failed to fetch books:", response.statusCode);
+      }
+    });
+  }, [apiClient]);
+
+  const filteredBooks = books
+    .filter((book) =>
+      book.title.toLowerCase().includes(searchTerm.toLowerCase()),
+    )
+    .slice(indexOfFirstBook, indexOfLastBook);
+
+  const handleBookClick = (bookId: number) => {
+    navigate(`/book_librarian/${bookId}`);
+  };
+
   const { t, i18n } = useTranslation();
   const [language, setLanguage] = useState(i18n.language);
 
@@ -24,31 +45,11 @@ function BooksList() {
     i18n.changeLanguage(selectedLanguage);
   };
 
-  useEffect(() => {
-    apiClient.getBooks().then((response) => {
-      if (response.success) {
-        setBooks(response.data);
-      } else {
-        console.error(t("fetchBooksFailed"), response.statusCode);
-      }
-    });
-  }, [apiClient, t]);
-
-  const filteredBooks = books
-    .filter((book) =>
-      book.title.toLowerCase().includes(searchTerm.toLowerCase()),
-    )
-    .slice(indexOfFirstBook, indexOfLastBook);
-
-  const handleBookClick = (bookId: number) => {
-    navigate(`/book/${bookId}`);
-  };
-
   return (
     <div className="books-list">
       <nav className="navbar">
         <div className="nav-links">
-          <Link to="/main">{t("homePage")}</Link>
+          <Link to="/main_librarian">{t("mainPage")}</Link>
           <Link to="/">{t("logout")}</Link>
           <FormControl sx={{ backgroundColor: "white" }}>
             <Select
@@ -107,8 +108,20 @@ function BooksList() {
           <span>&gt;</span>
         </button>
       </div>
+      <div className="books-list">
+        <Link to="/add_book">
+          <Button variant="contained" style={{ backgroundColor: "purple" }}>
+            {t("addBook")}
+          </Button>
+        </Link>
+        <Link to="/delete_book">
+          <Button variant="contained" style={{ backgroundColor: "purple" }}>
+            {t("deleteBook")}
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 }
 
-export default BooksList;
+export default BooksListLibrarian;

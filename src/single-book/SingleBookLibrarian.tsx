@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import "./SingleBook.css";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import { Button, FormControl, MenuItem, Select } from "@mui/material";
 import { useApi } from "../api/dto/ApiProvider";
 import { useTranslation } from "react-i18next";
-import { FormControl, MenuItem, Select } from "@mui/material";
 
-function SingleBook() {
+function SingleBookLibrarian() {
   const { id } = useParams<{ id: string }>();
   const [bookData, setBookData] = useState<any | null>(null);
   const apiClient = useApi();
+  const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const [language, setLanguage] = useState(i18n.language);
 
@@ -30,6 +31,24 @@ function SingleBook() {
     });
   }, [apiClient, id, t]);
 
+  const handleDelete = () => {
+    if (!id) return;
+
+    apiClient
+      .deleteBook(id)
+      .then((response) => {
+        if (response.success) {
+          console.log(t("deleteBookSuccess"));
+          navigate("/books-librarian");
+        } else {
+          console.error(t("deleteBookFailed"), response.statusCode);
+        }
+      })
+      .catch((error) => {
+        console.error(t("deleteBookError"), error);
+      });
+  };
+
   if (!bookData) {
     return <div>{t("loading")}</div>;
   }
@@ -40,8 +59,8 @@ function SingleBook() {
         <div className="nav-links">
           <Link to={`/book-details/${bookData.id}`}>{t("bookDetails")}</Link>
           <Link to={`/reviews/${bookData.id}`}>{t("bookReviews")}</Link>
-          <Link to="/books">{t("booksList")}</Link>
-          <Link to="/main">{t("homePage")}</Link>
+          <Link to="/books-librarian">{t("booksList")}</Link>
+          <Link to="/main_librarian">{t("homePage")}</Link>
           <Link to="/">{t("logout")}</Link>
           <FormControl sx={{ backgroundColor: "white" }}>
             <Select
@@ -66,8 +85,21 @@ function SingleBook() {
           ))}
         </tbody>
       </table>
+
+      <div className="button-container">
+        <Button
+          variant="contained"
+          style={{ backgroundColor: "purple" }}
+          onClick={handleDelete}
+        >
+          {t("deleteBook")}
+        </Button>
+        &nbsp;&nbsp;&nbsp;
+        <Button variant="contained" style={{ backgroundColor: "purple" }}>
+          {t("editBook")}
+        </Button>
+      </div>
     </div>
   );
 }
-
-export default SingleBook;
+export default SingleBookLibrarian;
