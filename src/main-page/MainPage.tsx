@@ -25,7 +25,7 @@ function MainPage() {
         <div className="nav-links">
           <Link to="/books">{t("booksList")}</Link>
           <Link to="/reviews">{t("reviews")}</Link>
-          <Link to="#">{t("contact")}</Link>
+          {/*<Link to="#">{t("contact")}</Link>*/}
           <Link to="/">{t("logout")}</Link>
           <FormControl sx={{ backgroundColor: "white" }}>
             <Select
@@ -40,7 +40,7 @@ function MainPage() {
         </div>
       </nav>
       <header className="header">{t("homePage")}</header>
-      <div>
+      <div className="content">
         <div style={{ marginTop: "3vh" }}>
           <ul className="list-buttons">
             <li>

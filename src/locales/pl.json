@@ -85,5 +85,17 @@
   "available": "Dostępna",
   "author": "Autor",
   "title": "Tytuł",
-  "backToList": "Wróć do listy książek"
+  "updateBook": "Zaktualizuj informacje o książce",
+  "backToList": "Wróć do listy książek",
+  "updateBookFailed": "Wystąpił błąd w czasie aktualiacji książki",
+  "userSuccessfullyDeleted": "Pomyślnie usunięto użytkownika",
+  "userDeletionFailed": "Błąd podczas usuwania użytkownika",
+  "deleteUser": "Usuń użytkownika",
+  "backToListOfUsers": "Wróć do listy użytkowników",
+  "updateUser": "Zaktualizuj użytkownika",
+  "userUpdated": "Zaktualizowano użytkownika",
+  "updateLoan": "Zaktualizuj wypożyczenie",
+  "loanUpdated": "Zaktalizowano wypożyczenie",
+  "backToLoansList": "Wróć do listy wypożyczeń",
+  "bookUpdated": "Zaktualizowano książkę"
 }

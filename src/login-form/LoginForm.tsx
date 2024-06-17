@@ -77,7 +77,6 @@ function LoginForm() {
         </FormControl>
       </nav>
       <header className="header">{t("login")}</header>
-
       <Formik
         initialValues={{ username: "", password: "", role: "reader" }}
         onSubmit={onSubmit}

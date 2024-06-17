@@ -10,6 +10,7 @@ function MainPageLibrarian() {
   const handleNavigation = (path: string) => {
     navigate(path);
   };
+
   const { t, i18n } = useTranslation();
   const [language, setLanguage] = useState(i18n.language);
 
@@ -39,51 +40,49 @@ function MainPageLibrarian() {
         </div>
       </nav>
       <header className="header">{t("homePage")}</header>
-      <div>
-        <div style={{ marginTop: "3vh" }}>
-          <ul className="list-buttons">
-            <li>
-              <button
-                onClick={() => handleNavigation("/books-librarian")}
-                className="list-button"
-              >
-                {t("booksList")}
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => handleNavigation("/users")}
-                className="list-button"
-              >
-                {t("users")}
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => handleNavigation("/loans_librarian")}
-                className="list-button"
-              >
-                {t("loans")}
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => handleNavigation("/all_bookdetails")}
-                className="list-button"
-              >
-                {t("bookDetails")}
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => handleNavigation("/get_me_librarian")}
-                className="list-button"
-              >
-                {t("myAccount")}
-              </button>
-            </li>
-          </ul>
-        </div>
+      <div style={{ marginTop: "3vh" }}>
+        <ul className="list-buttons">
+          <li>
+            <button
+              onClick={() => handleNavigation("/books-librarian")}
+              className="list-button"
+            >
+              {t("booksList")}
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => handleNavigation("/users")}
+              className="list-button"
+            >
+              {t("users")}
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => handleNavigation("/loans_librarian")}
+              className="list-button"
+            >
+              {t("loans")}
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => handleNavigation("/all_bookdetails")}
+              className="list-button"
+            >
+              {t("bookDetails")}
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => handleNavigation("/get_me_librarian")}
+              className="list-button"
+            >
+              {t("myAccount")}
+            </button>
+          </li>
+        </ul>
       </div>
     </div>
   );

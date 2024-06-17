@@ -62,7 +62,7 @@ function GetMe() {
     <div className="single-book">
       <nav className="navbar">
         <div className="nav-links">
-          <Link to="/books">{t("booksList")}</Link>
+          {/*<Link to="/books">{t("booksList")}</Link>*/}
           <Link to="/main">{t("homePage")}</Link>
           <Link to="/">{t("logout")}</Link>
           <FormControl sx={{ backgroundColor: "white" }}>

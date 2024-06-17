@@ -24,6 +24,10 @@ import DeleteBook from "./books-list/DeleteBook";
 import { I18nextProvider } from "react-i18next";
 import i18n from "./i18n";
 import GetMeLibrarian from "./users/GetMeLibrarian";
+import UpdateBook from "./books-list/UpdateBook";
+import DeleteUser from "./users/DeleteUser";
+import UpdateUser from "./users/UpdateUser";
+import UpdateLoan from "./loans/UpdateLoan";
 
 function App() {
   return (
@@ -54,11 +58,15 @@ function App() {
             <Route path="/loans" element={<LoansUser />} />
             <Route path="/loans_librarian" element={<Loans />} />
             <Route path="/add_user" element={<RegistrationForm />} />
+            <Route path="/delete_user" element={<DeleteUser />} />
+            <Route path="/update_user" element={<UpdateUser />} />
             <Route path="/users" element={<Users />} />
             <Route path="/add_loan" element={<AddLoan />} />
             <Route path="/delete_loan" element={<DeleteLoan />} />
+            <Route path="/update_loan" element={<UpdateLoan />} />
             <Route path="/add_book" element={<AddBook />} />
             <Route path="/delete_book" element={<DeleteBook />} />
+            <Route path="/update_book/:id" element={<UpdateBook />} />
           </Routes>
         </ApiProvider>
       </I18nextProvider>

@@ -77,6 +77,18 @@
   "available": "Available",
   "author": "Author",
   "title": "Title",
-  "backToList": "Back to Book List"
+  "backToList": "Back to Book List",
+  "updateBook": "Update book",
+  "updateBookFailed": "Update book failed",
+  "userSuccessfullyDeleted": "User successfully deleted",
+  "userDeletionFailed": "User deletion failed",
+  "deleteUser": "Delete user",
+  "backToListOfUsers": "Back to list of users",
+  "updateUser": "Update user",
+  "userUpdated": "User updated",
+  "updateLoan": "Update loan",
+  "loanUpdated": "Loan updated",
+  "backToLoansList": "Back to list of loans",
+  "bookUpdated": "Book updated"
 }
 

@@ -61,7 +61,7 @@ function GetMeLibrarian() {
     <div className="single-book">
       <nav className="navbar">
         <div className="nav-links">
-          <Link to="/books-librarian">{t("booksList")}</Link>
+          {/*<Link to="/books-librarian">{t("booksList")}</Link>*/}
           <Link to="/main_librarian">{t("homePage")}</Link>
           <Link to="/">{t("logout")}</Link>
           <FormControl sx={{ backgroundColor: "white" }}>
