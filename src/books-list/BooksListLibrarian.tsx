@@ -114,11 +114,16 @@ function BooksListLibrarian() {
             {t("addBook")}
           </Button>
         </Link>
-        <Link to="/delete_book">
-          <Button variant="contained" style={{ backgroundColor: "purple" }}>
-            {t("deleteBook")}
-          </Button>
-        </Link>
+        {/*<Link to="/delete_book">*/}
+        {/*  <Button variant="contained" style={{ backgroundColor: "purple" }}>*/}
+        {/*    {t("deleteBook")}*/}
+        {/*  </Button>*/}
+        {/*</Link>*/}
+        {/*<Link to="/update_book">*/}
+        {/*  <Button variant="contained" style={{ backgroundColor: "purple" }}>*/}
+        {/*    {t("updateBook")}*/}
+        {/*  </Button>*/}
+        {/*</Link>*/}
       </div>
     </div>
   );

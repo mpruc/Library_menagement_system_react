@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import * as yup from "yup";
 import { Link, useParams } from "react-router-dom";
-import "./BooksList.css";
+import "./Users.css";
 import { Formik } from "formik";
 import {
   Button,
@@ -14,7 +14,7 @@ import { useApi } from "../api/dto/ApiProvider";
 import { useTranslation } from "react-i18next";
 
 interface FormValues {
-  id: string;
+  userId: string;
 }
 
 interface ErrorResponse {
@@ -22,7 +22,8 @@ interface ErrorResponse {
   message: string;
 }
 
-function DeleteBook() {
+function DeleteUser() {
+  const { t, i18n } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const apiClient = useApi();
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -30,40 +31,15 @@ function DeleteBook() {
   useEffect(() => {
     if (!id) return;
 
-    apiClient.deleteBook(id).then((response) => {
+    apiClient.deleteUser(id).then((response) => {
       if (response.success) {
-        setSuccessMessage("Książka została pomyślnie usunięta.");
+        setSuccessMessage(t("userSuccessfullyDeleted"));
       } else {
-        console.error("Nie udało się usunąć książki:", response.statusCode);
+        console.error("Failed to delete user:", response.statusCode);
       }
     });
-  }, [apiClient, id]);
+  }, [apiClient, id, t]);
 
-  const onSubmit = useCallback(
-    async (values: FormValues, formik: any) => {
-      try {
-        const response = await apiClient.deleteBook(values.id);
-        if (response.success) {
-          setSuccessMessage("Książka została pomyślnie usunięta.");
-        } else {
-          formik.setFieldError(
-            "bookId",
-            `Usuwanie książki nie powiodło się: ${response.statusCode}`,
-          );
-        }
-      } catch (error: any) {
-        console.error("Wystąpił błąd podczas usuwania wypożyczenia:", error);
-        const axiosError = error as ErrorResponse;
-        formik.setFieldError(
-          "bookId",
-          `Wystąpił błąd podczas usuwania wypożyczenia: ${axiosError.message}`,
-        );
-      }
-    },
-    [apiClient],
-  );
-
-  const { t, i18n } = useTranslation();
   const [language, setLanguage] = useState(i18n.language);
 
   const handleChangeLanguage = (event: any) => {
@@ -72,17 +48,41 @@ function DeleteBook() {
     i18n.changeLanguage(selectedLanguage);
   };
 
+  const onSubmit = useCallback(
+    async (values: FormValues, formik: any) => {
+      try {
+        const response = await apiClient.deleteUser(values.userId);
+        if (response.success) {
+          setSuccessMessage(t("userSuccessfullyDeleted"));
+        } else {
+          formik.setFieldError(
+            "userId",
+            `${t("userDeletionFailed")}: ${response.statusCode}`,
+          );
+        }
+      } catch (error: any) {
+        console.error("Error while deleting user:", error);
+        const axiosError = error as ErrorResponse;
+        formik.setFieldError(
+          "userId",
+          `${t("userDeletionError")}: ${axiosError.message}`,
+        );
+      }
+    },
+    [apiClient, t],
+  );
+
   const initialValues: FormValues = {
-    id: id || "",
+    userId: id || "",
   };
 
   const validationSchema = yup.object().shape({
-    id: yup.string().required("Pole nie może być puste"),
+    userId: yup.string().required(t("fieldCannotBeEmpty")),
   });
 
   return (
     <div>
-      <header className="header">{t("deleteBook")}</header>
+      <header className="header">{t("deleteUser")}</header>
       <div className="language-selector">
         <FormControl>
           <Select
@@ -96,7 +96,7 @@ function DeleteBook() {
         </FormControl>
       </div>
 
-      <div style={{ marginTop: "5vh" }}>
+      <div style={{ marginTop: "10vh" }}>
         <Formik
           initialValues={initialValues}
           onSubmit={onSubmit}
@@ -106,20 +106,20 @@ function DeleteBook() {
         >
           {(formik) => (
             <form
-              className="books-list"
+              className="users"
               id="signForm"
               noValidate
               onSubmit={formik.handleSubmit}
             >
               <TextField
-                id="id"
-                name="id"
-                label={t("bookId")}
+                id="userId"
+                name="userId"
+                label={t("userId")}
                 variant="standard"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                error={formik.touched.id && !!formik.errors.id}
-                helperText={formik.touched.id && formik.errors.id}
+                error={formik.touched.userId && !!formik.errors.userId}
+                helperText={formik.touched.userId && formik.errors.userId}
                 InputLabelProps={{ style: { fontSize: "25px" } }}
               />
 
@@ -132,15 +132,15 @@ function DeleteBook() {
                     formik.isValid && formik.dirty ? "purple" : "",
                 }}
               >
-                {t("deleteBook")}
+                {t("deleteUser")}
               </Button>
 
               <Button variant="contained" style={{ backgroundColor: "purple" }}>
                 <Link
-                  to="/books-librarian"
+                  to="/users"
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
-                  {t("backToList")}
+                  {t("backToListOfUsers")}
                 </Link>
               </Button>
             </form>
@@ -153,4 +153,4 @@ function DeleteBook() {
   );
 }
 
-export default DeleteBook;
+export default DeleteUser;

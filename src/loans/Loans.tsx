@@ -127,6 +127,12 @@ function Loans() {
             {t("deleteLoan")}
           </Button>
         </Link>
+        &nbsp;&nbsp;&nbsp;
+        <Link to="/update_loan">
+          <Button variant="contained" style={{ backgroundColor: "purple" }}>
+            {t("updateLoan")}
+          </Button>
+        </Link>
       </div>
     </div>
   );

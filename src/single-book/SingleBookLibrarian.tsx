@@ -95,9 +95,11 @@ function SingleBookLibrarian() {
           {t("deleteBook")}
         </Button>
         &nbsp;&nbsp;&nbsp;
-        <Button variant="contained" style={{ backgroundColor: "purple" }}>
-          {t("editBook")}
-        </Button>
+        <Link to={`/update_book/${bookData.id}`}>
+          <Button variant="contained" style={{ backgroundColor: "purple" }}>
+            {t("updateBook")}
+          </Button>
+        </Link>
       </div>
     </div>
   );

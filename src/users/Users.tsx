@@ -111,6 +111,16 @@ function Users() {
             {t("addUser")}
           </Button>
         </Link>
+        <Link to="/delete_user">
+          <Button variant="contained" style={{ backgroundColor: "purple" }}>
+            {t("deleteUser")}
+          </Button>
+        </Link>
+        <Link to="/update_user">
+          <Button variant="contained" style={{ backgroundColor: "purple" }}>
+            {t("updateUser")}
+          </Button>
+        </Link>
       </div>
     </div>
   );
